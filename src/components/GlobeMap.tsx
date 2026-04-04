@@ -129,6 +129,7 @@ export function GlobeMap() {
           labelDotRadius={0.4}
           labelColor={(d: any) => d.id === activeNode ? '#00ff41' : d.id === hoveredNode?.id ? '#ffffff' : 'rgba(255, 255, 255, 0.4)'}
           labelResolution={2}
+          labelAltitude={0.02}
           onLabelClick={handleNodeClick}
           onRingClick={handleNodeClick}
           onLabelHover={handleNodeHover}
