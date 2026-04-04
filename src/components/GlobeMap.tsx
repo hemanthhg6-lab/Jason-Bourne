@@ -193,17 +193,51 @@ export function GlobeMap() {
               <X className="w-6 h-6" />
             </button>
 
-            <div className="mt-8">
-              <div className="flex items-center gap-2 mb-2">
-                <Crosshair className="w-4 h-4 text-treadstone-red" />
-                <span className="font-mono text-xs text-treadstone-red tracking-widest">FILE: {activeData.id.toUpperCase()}</span>
-              </div>
-              
-              <h2 className="text-3xl font-black tracking-tighter mb-6 uppercase glitch-text" data-text={activeData.title}>
-                {activeData.title}
-              </h2>
+              <div className="mt-8">
+                <div className="flex items-center gap-2 mb-2">
+                  <Crosshair className="w-4 h-4 text-treadstone-red" />
+                  <span className="font-mono text-xs text-treadstone-red tracking-widest">FILE: {activeData.id.toUpperCase()}</span>
+                </div>
+                
+                <h2 className="text-3xl font-black tracking-tighter mb-6 uppercase glitch-text" data-text={activeData.title}>
+                  {activeData.title}
+                </h2>
 
-              <div className="space-y-4 font-mono text-xs text-white/70">
+                {/* Character Dossier Section */}
+                {activeData.characterName && (
+                  <div className="mb-8 p-4 border border-white/10 bg-white/5 relative overflow-hidden group">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-treadstone-red" />
+                    <div className="flex gap-4">
+                      <div className="w-24 h-24 flex-shrink-0 border border-white/20 relative overflow-hidden bg-black/50">
+                        <img 
+                          key={activeData.id}
+                          src={activeData.characterImage} 
+                          alt={activeData.characterName}
+                          className="w-full h-full object-cover grayscale contrast-125 brightness-75 group-hover:grayscale-0 transition-all duration-500"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => {
+                            const target = e.currentTarget as HTMLImageElement;
+                            if (!target.src.includes('ui-avatars')) {
+                              target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(activeData.characterName)}&background=0D0D0D&color=ff2a2a&size=256&font-size=0.33`;
+                            }
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-treadstone-red/10 pointer-events-none" />
+                        <div className="absolute inset-0 border-[0.5px] border-white/10 pointer-events-none" />
+                      </div>
+                      <div className="flex-grow">
+                        <div className="font-mono text-[10px] text-white/40 mb-1 uppercase tracking-widest">Primary Subject / Asset</div>
+                        <div className="text-lg font-bold text-white tracking-tight leading-tight mb-2">{activeData.characterName}</div>
+                        <div className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-treadstone-red/20 border border-treadstone-red/40 rounded-sm">
+                          <span className="w-1 h-1 bg-treadstone-red rounded-full animate-pulse" />
+                          <span className="font-mono text-[10px] text-treadstone-red font-bold">IDENTIFIED</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-4 font-mono text-xs text-white/70">
                 <div className="flex items-start gap-3 border-b border-white/10 pb-4">
                   <MapPin className="w-4 h-4 mt-0.5 text-white/40" />
                   <div>
