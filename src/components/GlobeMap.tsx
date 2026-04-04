@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Globe from 'react-globe.gl';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, MapPin, Crosshair, FileText, Clock } from 'lucide-react';
+import { X, MapPin, Crosshair, FileText, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AudioEngine } from '../audio/AudioEngine';
 import { TIMELINE_NODES } from '../data/timeline';
 
@@ -83,6 +83,9 @@ export function GlobeMap() {
   };
 
   const activeData = TIMELINE_NODES.find(n => n.id === activeNode);
+  const activeIndex = activeData ? TIMELINE_NODES.findIndex(n => n.id === activeData.id) : -1;
+  const prevNode = activeIndex > 0 ? TIMELINE_NODES[activeIndex - 1] : null;
+  const nextNode = activeIndex < TIMELINE_NODES.length - 1 && activeIndex !== -1 ? TIMELINE_NODES[activeIndex + 1] : null;
 
   // Calculate tooltip position to prevent overflow
   const isRightHalf = mousePos.x > dimensions.width / 2;
@@ -90,6 +93,9 @@ export function GlobeMap() {
 
   return (
     <div className="w-full h-full relative overflow-hidden bg-black" onMouseMove={handleMouseMove}>
+      {/* CRT Scanline Overlay */}
+      <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.15] mix-blend-overlay bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
+      
       <div className="absolute inset-0 cursor-crosshair">
         <Globe
           ref={globeRef}
@@ -147,6 +153,32 @@ export function GlobeMap() {
       {/* Vignette Overlay to blend the edges of the globe into the dark background */}
       <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_150px_rgba(0,0,0,1)]" />
 
+      {/* Bottom Timeline Scrubber */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 pointer-events-auto">
+        <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+          {TIMELINE_NODES.map((node, i) => (
+            <div key={node.id} className="flex items-center">
+              <button
+                onClick={() => handleNodeClick(node)}
+                onMouseEnter={() => handleNodeHover(node)}
+                onMouseLeave={() => handleNodeHover(null)}
+                className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
+                  activeNode === node.id 
+                    ? 'bg-[#00ff41] scale-125 shadow-[0_0_10px_rgba(0,255,65,0.5)]' 
+                    : hoveredNode?.id === node.id
+                      ? 'bg-white scale-110'
+                      : 'bg-white/30 hover:bg-white/50'
+                }`}
+                title={node.title}
+              />
+              {i < TIMELINE_NODES.length - 1 && (
+                <div className={`w-4 h-[1px] ${activeNode === node.id || activeNode === TIMELINE_NODES[i+1].id ? 'bg-[#00ff41]/50' : 'bg-white/10'}`} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Hover Mini Card (Hook) */}
       <AnimatePresence>
         {hoveredNode && !activeNode && (
@@ -184,7 +216,7 @@ export function GlobeMap() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
             transition={{ type: "spring", damping: 20 }}
-            className="absolute top-0 right-0 w-full md:w-[450px] h-full bg-black/80 border-l border-treadstone-red/20 backdrop-blur-xl p-8 pt-24 overflow-y-auto z-20 pointer-events-auto"
+            className="absolute top-0 right-0 w-full md:w-[450px] h-full bg-black/80 border-l border-treadstone-red/20 backdrop-blur-xl p-8 pt-24 overflow-y-auto z-20 pointer-events-auto flex flex-col"
           >
             <button 
               onClick={handleCloseModal}
@@ -193,6 +225,7 @@ export function GlobeMap() {
               <X className="w-6 h-6" />
             </button>
 
+            <div className="flex-grow">
               <div className="mt-8">
                 <div className="flex items-center gap-2 mb-2">
                   <Crosshair className="w-4 h-4 text-treadstone-red" />
@@ -214,7 +247,6 @@ export function GlobeMap() {
                           src={activeData.characterImage} 
                           alt={activeData.characterName}
                           className="w-full h-full object-cover grayscale contrast-125 brightness-75 group-hover:grayscale-0 transition-all duration-500"
-                          referrerPolicy="no-referrer"
                           onError={(e) => {
                             const target = e.currentTarget as HTMLImageElement;
                             if (!target.src.includes('ui-avatars')) {
@@ -238,40 +270,70 @@ export function GlobeMap() {
                 )}
 
                 <div className="space-y-4 font-mono text-xs text-white/70">
-                <div className="flex items-start gap-3 border-b border-white/10 pb-4">
-                  <MapPin className="w-4 h-4 mt-0.5 text-white/40" />
-                  <div>
-                    <div className="text-white/40 mb-1">LOCATION</div>
-                    <div className="text-white">{activeData.location}</div>
-                    <div className="text-white/50 mt-1">{activeData.lat.toFixed(4)}°, {activeData.lng.toFixed(4)}°</div>
+                  <div className="flex items-start gap-3 border-b border-white/10 pb-4">
+                    <MapPin className="w-4 h-4 mt-0.5 text-white/40" />
+                    <div>
+                      <div className="text-white/40 mb-1">LOCATION</div>
+                      <div className="text-white">{activeData.location}</div>
+                      <div className="text-white/50 mt-1">{activeData.lat.toFixed(4)}°, {activeData.lng.toFixed(4)}°</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 border-b border-white/10 pb-4">
+                    <Clock className="w-4 h-4 mt-0.5 text-white/40" />
+                    <div>
+                      <div className="text-white/40 mb-1">TIMESTAMP</div>
+                      <div className="text-white">{activeData.date}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3 pt-2">
+                    <FileText className="w-4 h-4 mt-0.5 text-white/40" />
+                    <div>
+                      <div className="text-white/40 mb-2">INCIDENT REPORT</div>
+                      <p className="leading-relaxed text-sm text-white/90">
+                        {activeData.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 border-b border-white/10 pb-4">
-                  <Clock className="w-4 h-4 mt-0.5 text-white/40" />
-                  <div>
-                    <div className="text-white/40 mb-1">TIMESTAMP</div>
-                    <div className="text-white">{activeData.date}</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 pt-2">
-                  <FileText className="w-4 h-4 mt-0.5 text-white/40" />
-                  <div>
-                    <div className="text-white/40 mb-2">INCIDENT REPORT</div>
-                    <p className="leading-relaxed text-sm text-white/90">
-                      {activeData.description}
-                    </p>
+                <div className="mt-12 p-4 border border-treadstone-red/30 bg-treadstone-red/5 rounded">
+                  <div className="font-mono text-[10px] text-treadstone-red mb-1">THREAT LEVEL</div>
+                  <div className="font-mono text-lg font-bold text-treadstone-red tracking-widest">
+                    {activeData.status}
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="mt-12 p-4 border border-treadstone-red/30 bg-treadstone-red/5 rounded">
-                <div className="font-mono text-[10px] text-treadstone-red mb-1">THREAT LEVEL</div>
-                <div className="font-mono text-lg font-bold text-treadstone-red tracking-widest">
-                  {activeData.status}
-                </div>
+            {/* Navigation Footer */}
+            <div className="mt-8 pt-6 border-t border-white/10 flex justify-between items-center pb-8">
+              <button
+                onClick={() => prevNode && handleNodeClick(prevNode)}
+                disabled={!prevNode}
+                className={`flex items-center gap-2 font-mono text-xs tracking-widest transition-colors ${
+                  prevNode ? 'text-white/70 hover:text-white' : 'text-white/20 cursor-not-allowed'
+                }`}
+              >
+                <ChevronLeft className="w-4 h-4" />
+                PREVIOUS
+              </button>
+              
+              <div className="font-mono text-[10px] text-white/40 tracking-widest">
+                {activeIndex + 1} / {TIMELINE_NODES.length}
               </div>
+
+              <button
+                onClick={() => nextNode && handleNodeClick(nextNode)}
+                disabled={!nextNode}
+                className={`flex items-center gap-2 font-mono text-xs tracking-widest transition-colors ${
+                  nextNode ? 'text-white/70 hover:text-white' : 'text-white/20 cursor-not-allowed'
+                }`}
+              >
+                NEXT
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </motion.div>
         )}

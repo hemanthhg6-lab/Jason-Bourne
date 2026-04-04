@@ -11,7 +11,7 @@ export const TIMELINE_NODES = [
     description: 'Italian fishermen rescue an unconscious American with two gunshot wounds in his back. Subject suffers from dissociative amnesia but retains advanced combat skills and situational awareness. A laser projector implanted in his hip points to a Zurich safe deposit box.',
     status: 'CRITICAL',
     characterName: 'Jason Bourne',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
   },
   {
     id: 'zurich',
@@ -25,7 +25,7 @@ export const TIMELINE_NODES = [
     description: 'Subject accesses safe deposit box. Retrieves passports, significant currency, and a weapon. Assumes the alias "Jason Bourne". Treadstone is alerted by a bank employee. Conklin activates sleeper agents Castle, Manheim, and the Professor.',
     status: 'ACTIVE',
     characterName: 'Jason Bourne',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
   },
   {
     id: 'paris',
@@ -39,7 +39,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne and Marie Kreutz arrive in Paris. Ambushed by Castle. Bourne investigates the Wombosi assassination attempt and realizes he was the assassin. Confronts Conklin at a safe house, remembers aborting the mission, and formally resigns. Conklin is terminated by Manheim.',
     status: 'COMPROMISED',
     characterName: 'Alexander Conklin',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Chris_Cooper_2007.jpg/400px-Chris_Cooper_2007.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/14/Chris_Cooper_2007.jpg/400px-Chris_Cooper_2007.jpg',
   },
   {
     id: 'mykonos',
@@ -53,7 +53,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne locates Marie Kreutz operating a scooter rental business. They reunite. Meanwhile, Ward Abbott shuts down Treadstone before an oversight committee but introduces a new project: Blackbriar.',
     status: 'DORMANT',
     characterName: 'Marie Kreutz',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Franka_Potente_2014.jpg/400px-Franka_Potente_2014.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Franka_Potente_2014.jpg/400px-Franka_Potente_2014.jpg',
   },
   {
     id: 'goa',
@@ -67,7 +67,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne is framed for a $3M CIA theft in Berlin by Russian FSB agent Kirill. Kirill travels to Goa to assassinate Bourne. Marie Kreutz is KIA during the pursuit. Bourne survives and re-enters active operational status.',
     status: 'CRITICAL',
     characterName: 'Marie Kreutz',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Franka_Potente_2014.jpg/400px-Franka_Potente_2014.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Franka_Potente_2014.jpg/400px-Franka_Potente_2014.jpg',
   },
   {
     id: 'naples',
@@ -81,7 +81,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne intentionally gets identified by security. Subdues his CIA interrogator, copies the agent\'s SIM card, and learns about Pamela Landy and his frame-up via a cloned phone call.',
     status: 'ACTIVE',
     characterName: 'Jason Bourne',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
   },
   {
     id: 'munich',
@@ -95,7 +95,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne visits Jarda, the only other surviving Treadstone operative. Jarda attempts to attack him. Bourne neutralizes Jarda and escapes.',
     status: 'ACTIVE',
     characterName: 'Jarda',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Marton_Csokas_2014.jpg/400px-Marton_Csokas_2014.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/05/Marton_Csokas_2014.jpg/400px-Marton_Csokas_2014.jpg',
   },
   {
     id: 'berlin',
@@ -109,7 +109,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne kidnaps Nicky Parsons and recalls the Neski assassination. He breaks into Ward Abbott\'s hotel room, forcing a confession regarding the $20M theft and the frame-up. Abbott commits suicide when confronted by Landy.',
     status: 'RESOLVED',
     characterName: 'Ward Abbott',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Brian_Cox_2016.jpg/400px-Brian_Cox_2016.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/65/Brian_Cox_2016.jpg/400px-Brian_Cox_2016.jpg',
   },
   {
     id: 'moscow',
@@ -123,7 +123,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne travels to find Irena Neski. Engages in a massive high-speed pursuit with Kirill. Kirill is mortally wounded. Bourne confesses to Irena about her parents\' murder, apologizes, and evades capture.',
     status: 'ESCAPED',
     characterName: 'Irena Neski',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Oksana_Akinshina_2012.jpg/400px-Oksana_Akinshina_2012.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/90/Oksana_Akinshina_2012.jpg/400px-Oksana_Akinshina_2012.jpg',
   },
   {
     id: 'turin',
@@ -137,7 +137,7 @@ export const TIMELINE_NODES = [
     description: 'Guardian journalist Simon Ross meets an informant to learn about Bourne and Operation Blackbriar. Ross is flagged by the Echelon surveillance system.',
     status: 'MONITORED',
     characterName: 'Simon Ross',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Paddy_Considine_2011.jpg/400px-Paddy_Considine_2011.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/87/Paddy_Considine_2011.jpg/400px-Paddy_Considine_2011.jpg',
   },
   {
     id: 'london',
@@ -151,7 +151,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne attempts to guide Simon Ross through CIA surveillance. Ross panics, ignores instructions, and is shot dead by Blackbriar assassin Paz. Bourne acquires Blackbriar documentation.',
     status: 'COMPROMISED',
     characterName: 'Paz',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Edgar_Ramirez_2016.jpg/400px-Edgar_Ramirez_2016.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/41/Edgar_Ramirez_2016.jpg/400px-Edgar_Ramirez_2016.jpg',
   },
   {
     id: 'madrid',
@@ -165,7 +165,7 @@ export const TIMELINE_NODES = [
     description: 'Bourne infiltrates CIA station chief Neil Daniels\' office. Incapacitates Vosen\'s gunmen, reconnects with Nicky Parsons, and tracks Daniels to Tangier.',
     status: 'ACTIVE',
     characterName: 'Nicky Parsons',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Julia_Stiles_2012.jpg/400px-Julia_Stiles_2012.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Julia_Stiles_2012.jpg/400px-Julia_Stiles_2012.jpg',
   },
   {
     id: 'tangier',
@@ -179,7 +179,7 @@ export const TIMELINE_NODES = [
     description: 'Daniels is KIA by Desh\'s planted bomb. Bourne engages Desh in extended CQC to save Nicky. Desh is neutralized. Bourne acquires the address of the Deep Cover CIA Bureau in New York.',
     status: 'CRITICAL',
     characterName: 'Desh Bouksani',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Joey_Ansah.jpg/400px-Joey_Ansah.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Joey_Ansah.jpg/400px-Joey_Ansah.jpg',
   },
   {
     id: 'newyork',
@@ -193,6 +193,6 @@ export const TIMELINE_NODES = [
     description: 'Bourne tricks Vosen, steals Blackbriar files, and hands them to Landy at 415 East 71st Street. Confronts Dr. Hirsch and remembers volunteering for Treadstone. Leaps into the East River under fire from Vosen. Body not found.',
     status: 'ROGUE',
     characterName: 'Noah Vosen',
-    characterImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/David_Strathairn_2012.jpg/400px-David_Strathairn_2012.jpg',
+    characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/07/David_Strathairn_2012.jpg/400px-David_Strathairn_2012.jpg',
   }
 ];
