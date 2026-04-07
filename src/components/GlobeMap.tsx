@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Globe from 'react-globe.gl';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, MapPin, Crosshair, FileText, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, MapPin, Crosshair, FileText, Clock, ChevronLeft, ChevronRight, Cctv } from 'lucide-react';
 import { AudioEngine } from '../audio/AudioEngine';
 import { TIMELINE_NODES } from '../data/timeline';
 
@@ -298,6 +298,40 @@ export function GlobeMap() {
                     </div>
                   </div>
                 </div>
+
+                {/* Surveillance Footage Section */}
+                {(activeData as any).youtubeId && (
+                  <div className="mt-8">
+                    <div className="flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
+                      <Cctv className="w-4 h-4 text-treadstone-red" />
+                      <span className="font-mono text-xs text-white/40 tracking-widest">SURVEILLANCE FEED // ARCHIVE</span>
+                    </div>
+                    <div className="relative w-full aspect-video border border-white/20 bg-black overflow-hidden group">
+                      {/* CRT Overlay for the video */}
+                      <div className="absolute inset-0 pointer-events-none z-10 opacity-30 mix-blend-overlay bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
+                      <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_30px_rgba(0,0,0,0.8)]" />
+                      
+                      {/* Recording indicator */}
+                      <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                        <span className="font-mono text-[10px] text-red-500 tracking-widest font-bold">REC</span>
+                      </div>
+                      
+                      {/* Timecode */}
+                      <div className="absolute bottom-3 left-3 z-20 font-mono text-[10px] text-white/70 tracking-widest bg-black/50 px-2 py-1 rounded">
+                        {activeData.date.toUpperCase()} // {activeData.countryCode || 'INTL'}
+                      </div>
+
+                      <iframe
+                        className="w-full h-full grayscale-[0.5] contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                        src={`https://www.youtube.com/embed/${(activeData as any).youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${(activeData as any).youtubeId}&playsinline=1`}
+                        title="Surveillance Footage"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-12 p-4 border border-treadstone-red/30 bg-treadstone-red/5 rounded">
                   <div className="font-mono text-[10px] text-treadstone-red mb-1">THREAT LEVEL</div>

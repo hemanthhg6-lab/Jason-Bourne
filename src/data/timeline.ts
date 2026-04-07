@@ -12,6 +12,7 @@ export const TIMELINE_NODES = [
     status: 'CRITICAL',
     characterName: 'Jason Bourne',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
+    youtubeId: 'doYzcEO9Qjw',
   },
   {
     id: 'zurich',
@@ -26,6 +27,7 @@ export const TIMELINE_NODES = [
     status: 'ACTIVE',
     characterName: 'Jason Bourne',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
+    youtubeId: '7QDezH7fAzI',
   },
   {
     id: 'paris',
@@ -40,6 +42,7 @@ export const TIMELINE_NODES = [
     status: 'COMPROMISED',
     characterName: 'Alexander Conklin',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/1/14/Chris_Cooper_2007.jpg/400px-Chris_Cooper_2007.jpg',
+    youtubeId: 'h6cdNtvFGB0',
   },
   {
     id: 'mykonos',
@@ -54,6 +57,7 @@ export const TIMELINE_NODES = [
     status: 'DORMANT',
     characterName: 'Marie Kreutz',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Franka_Potente_2014.jpg/400px-Franka_Potente_2014.jpg',
+    youtubeId: 's8SiJDBcsVk',
   },
   {
     id: 'goa',
@@ -68,6 +72,7 @@ export const TIMELINE_NODES = [
     status: 'CRITICAL',
     characterName: 'Marie Kreutz',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Franka_Potente_2014.jpg/400px-Franka_Potente_2014.jpg',
+    youtubeId: 'yvdoyibryGU',
   },
   {
     id: 'naples',
@@ -82,6 +87,7 @@ export const TIMELINE_NODES = [
     status: 'ACTIVE',
     characterName: 'Jason Bourne',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/83/Matt_Damon_TIFF_2015.jpg/400px-Matt_Damon_TIFF_2015.jpg',
+    youtubeId: 'UglKOzS71Fs',
   },
   {
     id: 'munich',
@@ -96,6 +102,7 @@ export const TIMELINE_NODES = [
     status: 'ACTIVE',
     characterName: 'Jarda',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/05/Marton_Csokas_2014.jpg/400px-Marton_Csokas_2014.jpg',
+    youtubeId: 'L2kI222dzZo',
   },
   {
     id: 'berlin',
@@ -110,6 +117,7 @@ export const TIMELINE_NODES = [
     status: 'RESOLVED',
     characterName: 'Ward Abbott',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/6/65/Brian_Cox_2016.jpg/400px-Brian_Cox_2016.jpg',
+    youtubeId: 'Nq295Mg6PHg',
   },
   {
     id: 'moscow',
@@ -124,6 +132,7 @@ export const TIMELINE_NODES = [
     status: 'ESCAPED',
     characterName: 'Irena Neski',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/9/90/Oksana_Akinshina_2012.jpg/400px-Oksana_Akinshina_2012.jpg',
+    youtubeId: 'okT6ifQiJzM',
   },
   {
     id: 'turin',
@@ -138,6 +147,7 @@ export const TIMELINE_NODES = [
     status: 'MONITORED',
     characterName: 'Simon Ross',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/87/Paddy_Considine_2011.jpg/400px-Paddy_Considine_2011.jpg',
+    youtubeId: 'DUd5RPVDjPY',
   },
   {
     id: 'london',
@@ -152,6 +162,7 @@ export const TIMELINE_NODES = [
     status: 'COMPROMISED',
     characterName: 'Paz',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/4/41/Edgar_Ramirez_2016.jpg/400px-Edgar_Ramirez_2016.jpg',
+    youtubeId: 'fsudOZBhVQk',
   },
   {
     id: 'madrid',
@@ -166,6 +177,7 @@ export const TIMELINE_NODES = [
     status: 'ACTIVE',
     characterName: 'Nicky Parsons',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Julia_Stiles_2012.jpg/400px-Julia_Stiles_2012.jpg',
+    youtubeId: 'vAJv9_6ymeo',
   },
   {
     id: 'tangier',
@@ -180,6 +192,7 @@ export const TIMELINE_NODES = [
     status: 'CRITICAL',
     characterName: 'Desh Bouksani',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Joey_Ansah.jpg/400px-Joey_Ansah.jpg',
+    youtubeId: 'TglSVCG-sYY',
   },
   {
     id: 'newyork',
@@ -194,5 +207,6 @@ export const TIMELINE_NODES = [
     status: 'ROGUE',
     characterName: 'Noah Vosen',
     characterImage: 'https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/thumb/0/07/David_Strathairn_2012.jpg/400px-David_Strathairn_2012.jpg',
+    youtubeId: 'T1ZortZnM18',
   }
 ];
