@@ -4,6 +4,7 @@ import { ShieldAlert, Fingerprint, Database, Terminal } from 'lucide-react';
 import { AudioEngine } from './audio/AudioEngine';
 import { TitleSequence } from './components/TitleSequence';
 import { GlobeMap } from './components/GlobeMap';
+import { SoundtrackPlayer } from './components/SoundtrackPlayer';
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -18,18 +19,7 @@ export default function App() {
     <div className="w-full h-screen bg-[#050505] text-white font-sans overflow-hidden crt-flicker">
       <div className="crt-overlay pointer-events-none z-50"></div>
       
-      {/* YouTube Audio Player - Only renders after user interaction to allow autoplay */}
-      {started && (
-        <iframe 
-          width="0" 
-          height="0" 
-          src="https://www.youtube.com/embed/q-0we1614_U?autoplay=1&controls=0&showinfo=0&autohide=1" 
-          frameBorder="0" 
-          allow="autoplay" 
-          className="hidden"
-          title="Bourne OST"
-        ></iframe>
-      )}
+      {started && <SoundtrackPlayer />}
 
       <AnimatePresence mode="wait">
         {!started ? (

@@ -245,9 +245,9 @@ export function GlobeMap() {
                       <div className="w-24 h-24 flex-shrink-0 border border-white/20 relative overflow-hidden bg-black/50">
                         <img 
                           key={activeData.id}
-                          src={activeData.characterImage} 
+                          src={(activeData as any).youtubeId ? `https://img.youtube.com/vi/${(activeData as any).youtubeId}/mqdefault.jpg` : activeData.characterImage} 
                           alt={activeData.characterName}
-                          className="w-full h-full object-cover grayscale contrast-125 brightness-75 group-hover:grayscale-0 transition-all duration-500"
+                          className="w-full h-full object-cover object-center grayscale contrast-125 brightness-75 group-hover:grayscale-0 transition-all duration-500"
                           onError={(e) => {
                             const target = e.currentTarget as HTMLImageElement;
                             if (!target.src.includes('ui-avatars')) {
