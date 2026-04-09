@@ -245,7 +245,7 @@ export function GlobeMap() {
                       <div className="w-24 h-24 flex-shrink-0 border border-white/20 relative overflow-hidden bg-black/50">
                         <img 
                           key={activeData.id}
-                          src={(activeData as any).youtubeId ? `https://img.youtube.com/vi/${(activeData as any).youtubeId}/mqdefault.jpg` : activeData.characterImage} 
+                          src={activeData.characterImage} 
                           alt={activeData.characterName}
                           className="w-full h-full object-cover object-center grayscale contrast-125 brightness-75 group-hover:grayscale-0 transition-all duration-500"
                           onError={(e) => {
@@ -324,7 +324,7 @@ export function GlobeMap() {
 
                       <iframe
                         className="w-full h-full grayscale-[0.5] contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-                        src={`https://www.youtube.com/embed/${(activeData as any).youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&loop=1&playlist=${(activeData as any).youtubeId}&playsinline=1`}
+                        src={`https://www.youtube.com/embed/${(activeData as any).youtubeId}?autoplay=1&mute=1&controls=0&modestbranding=1&playsinline=1&start=${(activeData as any).youtubeStartTime || 0}`}
                         title="Surveillance Footage"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
