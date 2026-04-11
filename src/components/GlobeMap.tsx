@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Globe from 'react-globe.gl';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, MapPin, Crosshair, FileText, Clock, ChevronLeft, ChevronRight, Cctv } from 'lucide-react';
+import { X, MapPin, Crosshair, FileText, Clock, ChevronLeft, ChevronRight, Cctv, Move, MousePointerClick } from 'lucide-react';
 import { AudioEngine } from '../audio/AudioEngine';
 import { TIMELINE_NODES } from '../data/timeline';
 
@@ -12,6 +12,7 @@ export function GlobeMap() {
   const [countries, setCountries] = useState<any[]>([]);
   const globeRef = useRef<any>();
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [ftueStep, setFtueStep] = useState(0); // 0: needs globe drag/zoom, 1: needs node click, 2: complete
 
   useEffect(() => {
     const handleResize = () => {
@@ -38,7 +39,8 @@ export function GlobeMap() {
       controls.dampingFactor = 0.05;
       controls.minDistance = 120; // Prevent zooming inside the earth
       controls.maxDistance = 500; // Prevent zooming too far out
-      globeRef.current.pointOfView({ altitude: 2.5 }, 0);
+      // Center on the Mediterranean/Europe where the first events occur
+      globeRef.current.pointOfView({ lat: 43.0211, lng: 5.9322, altitude: 2.5 }, 0);
     }
   }, []);
 
@@ -57,6 +59,7 @@ export function GlobeMap() {
     AudioEngine.playNodeClick();
     setActiveNode(node.id);
     setHoveredNode(null); // Hide tooltip when clicked
+    if (ftueStep < 2) setFtueStep(2);
     
     if (globeRef.current) {
       // Zoom in smoothly to the clicked location
@@ -96,7 +99,11 @@ export function GlobeMap() {
       {/* CRT Scanline Overlay */}
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.15] mix-blend-overlay bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
       
-      <div className="absolute inset-0 cursor-crosshair">
+      <div 
+        className="absolute inset-0 cursor-crosshair"
+        onPointerDown={() => ftueStep === 0 && setFtueStep(1)}
+        onWheel={() => ftueStep === 0 && setFtueStep(1)}
+      >
         <Globe
           ref={globeRef}
           width={dimensions.width}
@@ -153,6 +160,36 @@ export function GlobeMap() {
       
       {/* Vignette Overlay to blend the edges of the globe into the dark background */}
       <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_150px_rgba(0,0,0,1)]" />
+
+      {/* FTUE Nudges */}
+      <AnimatePresence>
+        {ftueStep === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-1/4 left-1/2 -translate-x-1/2 pointer-events-none z-40"
+          >
+            <div className="bg-black/80 border border-[#00ff41]/50 text-[#00ff41] px-6 py-3 rounded font-mono text-xs tracking-widest flex items-center gap-3 shadow-[0_0_20px_rgba(0,255,65,0.2)] backdrop-blur-sm">
+              <Move className="w-4 h-4 animate-pulse" />
+              <span>[ SYSTEM PROMPT: DRAG TO ROTATE // SCROLL TO ZOOM ]</span>
+            </div>
+          </motion.div>
+        )}
+        {ftueStep === 1 && !activeNode && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute bottom-24 left-1/2 -translate-x-1/2 pointer-events-none z-40"
+          >
+            <div className="bg-black/80 border border-treadstone-red/50 text-treadstone-red px-6 py-3 rounded font-mono text-xs tracking-widest flex items-center gap-3 shadow-[0_0_20px_rgba(255,42,42,0.2)] backdrop-blur-sm">
+              <MousePointerClick className="w-4 h-4 animate-pulse" />
+              <span>[ SYSTEM PROMPT: SELECT TARGET TO VIEW DOSSIER ]</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Bottom Timeline Scrubber */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 pointer-events-auto">
@@ -241,30 +278,12 @@ export function GlobeMap() {
                 {activeData.characterName && (
                   <div className="mb-8 p-4 border border-white/10 bg-white/5 relative overflow-hidden group">
                     <div className="absolute top-0 left-0 w-1 h-full bg-treadstone-red" />
-                    <div className="flex gap-4">
-                      <div className="w-24 h-24 flex-shrink-0 border border-white/20 relative overflow-hidden bg-black/50">
-                        <img 
-                          key={activeData.id}
-                          src={activeData.characterImage} 
-                          alt={activeData.characterName}
-                          className="w-full h-full object-cover object-center grayscale contrast-125 brightness-75 group-hover:grayscale-0 transition-all duration-500"
-                          onError={(e) => {
-                            const target = e.currentTarget as HTMLImageElement;
-                            if (!target.src.includes('ui-avatars')) {
-                              target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(activeData.characterName)}&background=0D0D0D&color=ff2a2a&size=256&font-size=0.33`;
-                            }
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-treadstone-red/10 pointer-events-none" />
-                        <div className="absolute inset-0 border-[0.5px] border-white/10 pointer-events-none" />
-                      </div>
-                      <div className="flex-grow">
-                        <div className="font-mono text-[10px] text-white/40 mb-1 uppercase tracking-widest">Primary Subject / Asset</div>
-                        <div className="text-lg font-bold text-white tracking-tight leading-tight mb-2">{activeData.characterName}</div>
-                        <div className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-treadstone-red/20 border border-treadstone-red/40 rounded-sm">
-                          <span className="w-1 h-1 bg-treadstone-red rounded-full animate-pulse" />
-                          <span className="font-mono text-[10px] text-treadstone-red font-bold">IDENTIFIED</span>
-                        </div>
+                    <div className="pl-2">
+                      <div className="font-mono text-[10px] text-white/40 mb-1 uppercase tracking-widest">Primary Subject / Asset</div>
+                      <div className="text-lg font-bold text-white tracking-tight leading-tight mb-2">{activeData.characterName}</div>
+                      <div className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-treadstone-red/20 border border-treadstone-red/40 rounded-sm">
+                        <span className="w-1 h-1 bg-treadstone-red rounded-full animate-pulse" />
+                        <span className="font-mono text-[10px] text-treadstone-red font-bold">IDENTIFIED</span>
                       </div>
                     </div>
                   </div>
