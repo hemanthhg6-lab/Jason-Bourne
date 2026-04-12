@@ -1,6 +1,7 @@
 export const TIMELINE_NODES = [
   {
     id: 'mediterranean',
+    act: 1,
     title: 'THE AWAKENING',
     location: 'Mediterranean Sea',
     countryCode: '',
@@ -17,6 +18,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'zurich',
+    act: 1,
     title: 'GEMEINSCHAFT BANK',
     location: 'Zurich, Switzerland',
     countryCode: 'CHE',
@@ -33,6 +35,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'cia-hq',
+    act: 1,
     title: 'TREADSTONE ACTIVATED',
     location: 'Langley, Virginia, USA',
     countryCode: 'USA',
@@ -49,6 +52,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'paris-consulate',
+    act: 1,
     title: 'US CONSULATE ESCAPE',
     location: 'Paris, France',
     countryCode: 'FRA',
@@ -65,6 +69,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'paris-countryside',
+    act: 1,
     title: 'THE PROFESSOR',
     location: 'French Countryside, France',
     countryCode: 'FRA',
@@ -81,6 +86,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'paris-safehouse',
+    act: 1,
     title: 'TREADSTONE CONFRONTATION',
     location: 'Paris, France',
     countryCode: 'FRA',
@@ -97,6 +103,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'mykonos',
+    act: 1,
     title: 'REUNION',
     location: 'Mykonos, Greece',
     countryCode: 'GRC',
@@ -113,6 +120,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'goa',
+    act: 2,
     title: 'THE FRAME-UP',
     location: 'Goa, India',
     countryCode: 'IND',
@@ -129,6 +137,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'naples',
+    act: 2,
     title: 'INTERROGATION',
     location: 'Naples, Italy',
     countryCode: 'ITA',
@@ -145,6 +154,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'munich-berlin',
+    act: 2,
     title: 'LAST TREADSTONE ASSET',
     location: 'Munich / Berlin, Germany',
     countryCode: 'DEU',
@@ -161,6 +171,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'berlin-hotel',
+    act: 2,
     title: 'THE CONFESSION',
     location: 'Berlin, Germany',
     countryCode: 'DEU',
@@ -177,6 +188,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'moscow',
+    act: 2,
     title: 'FSB PURSUIT',
     location: 'Moscow, Russia',
     countryCode: 'RUS',
@@ -193,6 +205,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'london',
+    act: 3,
     title: 'WATERLOO STATION',
     location: 'London, UK',
     countryCode: 'GBR',
@@ -209,6 +222,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'madrid-tangier',
+    act: 3,
     title: 'MEDINA CHASE',
     location: 'Madrid / Tangier',
     countryCode: 'MAR',
@@ -225,6 +239,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'newyork',
+    act: 3,
     title: 'BLACKBRIAR EXPOSED',
     location: 'New York City, USA',
     countryCode: 'USA',
@@ -241,6 +256,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'nyc-rooftop',
+    act: 3,
     title: 'THE ULTIMATUM',
     location: 'New York City, USA',
     countryCode: 'USA',
@@ -257,6 +273,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'various-locations',
+    act: 3,
     title: 'OUTCOME PROGRAM',
     location: 'Various Locations',
     countryCode: 'USA',
@@ -273,6 +290,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'manila',
+    act: 3,
     title: 'VIRALIZATION',
     location: 'Manila, Philippines',
     countryCode: 'PHL',
@@ -289,6 +307,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'reykjavik-athens',
+    act: 4,
     title: 'THE FINAL TRUTH',
     location: 'Reykjavik / Athens',
     countryCode: 'GRC',
@@ -305,6 +324,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'berlin-london',
+    act: 4,
     title: 'RICHARD WEBB',
     location: 'Berlin / London',
     countryCode: 'GBR',
@@ -321,6 +341,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'las-vegas',
+    act: 4,
     title: 'IRON HAND',
     location: 'Las Vegas, USA',
     countryCode: 'USA',
@@ -337,6 +358,7 @@ export const TIMELINE_NODES = [
   },
   {
     id: 'las-vegas-strip',
+    act: 4,
     title: 'THE CONFRONTATION',
     location: 'Las Vegas Strip, USA',
     countryCode: 'USA',

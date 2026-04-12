@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion, Variants } from 'motion/react';
 
 export function TitleSequence({ onComplete }: { onComplete: () => void }) {
   const title = "JASON BOURNE";
@@ -12,7 +12,7 @@ export function TitleSequence({ onComplete }: { onComplete: () => void }) {
     return () => clearTimeout(timer);
   }, [onComplete]);
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
@@ -29,7 +29,7 @@ export function TitleSequence({ onComplete }: { onComplete: () => void }) {
     }
   };
 
-  const child = {
+  const child: Variants = {
     hidden: { opacity: 0, filter: "blur(20px)", x: 40, scale: 1.5 },
     visible: {
       opacity: 1,

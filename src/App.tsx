@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShieldAlert, Fingerprint, Database, Terminal } from 'lucide-react';
+import { ShieldAlert, Fingerprint, Database, Terminal, Globe2, Network } from 'lucide-react';
 import { AudioEngine } from './audio/AudioEngine';
 import { TitleSequence } from './components/TitleSequence';
 import { GlobeMap } from './components/GlobeMap';
+import { NetworkMap } from './components/NetworkMap';
+import { DossierDrawer } from './components/DossierDrawer';
 import { SoundtrackPlayer } from './components/SoundtrackPlayer';
 
 export default function App() {
   const [started, setStarted] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
+  const [viewMode, setViewMode] = useState<'globe' | 'network'>('globe');
+  const [activeNode, setActiveNode] = useState<string | null>(null);
 
   const handleStart = () => {
     setStarted(true);
@@ -58,6 +62,23 @@ export default function App() {
               </div>
               
               <div className="flex items-center gap-6 font-mono text-xs text-white/50 hidden md:flex">
+                <div className="flex items-center gap-2 pointer-events-auto">
+                  <button 
+                    onClick={() => setViewMode('globe')}
+                    className={`flex items-center gap-2 px-3 py-1.5 border transition-colors ${viewMode === 'globe' ? 'bg-white/10 border-white/30 text-white' : 'border-transparent hover:text-white'}`}
+                  >
+                    <Globe2 className="w-4 h-4" />
+                    <span>GLOBE VIEW</span>
+                  </button>
+                  <button 
+                    onClick={() => setViewMode('network')}
+                    className={`flex items-center gap-2 px-3 py-1.5 border transition-colors ${viewMode === 'network' ? 'bg-white/10 border-white/30 text-white' : 'border-transparent hover:text-white'}`}
+                  >
+                    <Network className="w-4 h-4" />
+                    <span>NETWORK VIEW</span>
+                  </button>
+                </div>
+                <div className="w-px h-4 bg-white/20 mx-2"></div>
                 <div className="flex items-center gap-2">
                   <Fingerprint className="w-4 h-4" />
                   <span>SUBJECT: BOURNE, J.</span>
@@ -75,8 +96,19 @@ export default function App() {
 
             {/* Main Content Area */}
             <main className="w-full h-full">
-              <GlobeMap />
+              {viewMode === 'globe' ? (
+                <GlobeMap activeNode={activeNode} onNodeSelect={setActiveNode} />
+              ) : (
+                <NetworkMap activeNode={activeNode} onNodeSelect={setActiveNode} />
+              )}
             </main>
+
+            {/* Dossier Drawer */}
+            <DossierDrawer 
+              activeNodeId={activeNode} 
+              onClose={() => setActiveNode(null)} 
+              onNavigate={setActiveNode}
+            />
             
             {/* Footer Status */}
             <footer className="absolute bottom-0 left-0 w-full h-8 border-t border-white/10 flex items-center px-4 justify-between font-mono text-[10px] text-white/30 bg-black/80 z-30 pointer-events-none">
