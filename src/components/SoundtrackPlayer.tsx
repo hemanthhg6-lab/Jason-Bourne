@@ -25,7 +25,7 @@ export function SoundtrackPlayer() {
     <div className="absolute bottom-12 left-6 z-50 pointer-events-auto">
       <button
         onClick={toggleMute}
-        className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-2 rounded border border-white/10 hover:bg-white/20 transition-colors group shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+        className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-2 rounded border border-white/10 hover:bg-white/20 transition-colors group shadow-[0_0_15px_rgba(0,0,0,0.5)] m-0 mb-[-20px] pl-[12px]"
       >
         {isMuted ? (
           <VolumeX className="w-4 h-4 text-treadstone-red" />

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ShieldAlert, Fingerprint, Database, Terminal, Globe2, Network } from 'lucide-react';
 import { AudioEngine } from './audio/AudioEngine';
 import { TitleSequence } from './components/TitleSequence';
+import { ViewSelector } from './components/ViewSelector';
 import { GlobeMap } from './components/GlobeMap';
 import { NetworkMap } from './components/NetworkMap';
 import { DossierDrawer } from './components/DossierDrawer';
@@ -11,6 +12,7 @@ import { SoundtrackPlayer } from './components/SoundtrackPlayer';
 export default function App() {
   const [started, setStarted] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
+  const [viewSelectionComplete, setViewSelectionComplete] = useState(false);
   const [viewMode, setViewMode] = useState<'globe' | 'network'>('globe');
   const [activeNode, setActiveNode] = useState<string | null>(null);
 
@@ -43,6 +45,14 @@ export default function App() {
           </motion.div>
         ) : !introComplete ? (
           <TitleSequence key="intro" onComplete={() => setIntroComplete(true)} />
+        ) : !viewSelectionComplete ? (
+          <ViewSelector 
+            key="selector"
+            onSelect={(mode) => {
+              setViewMode(mode);
+              setViewSelectionComplete(true);
+            }} 
+          />
         ) : (
           <motion.div 
             key="main"
