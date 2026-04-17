@@ -9,6 +9,8 @@ import {
   NodeProps,
   Handle,
   Position,
+  ReactFlowProvider,
+  useReactFlow,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { TIMELINE_NODES } from '../data/timeline';
@@ -44,8 +46,9 @@ const nodeTypes = {
   timeline: TimelineNode,
 };
 
-export function NetworkMap({ activeNode, onNodeSelect }: NetworkMapProps) {
+function NetworkMapInner({ activeNode, onNodeSelect }: NetworkMapProps) {
   const [activeAct, setActiveAct] = useState<number | null>(null);
+  const { fitView } = useReactFlow();
 
   // Automatically switch act if activeNode changes externally and is not in the current act
   useEffect(() => {
@@ -105,11 +108,18 @@ export function NetworkMap({ activeNode, onNodeSelect }: NetworkMapProps) {
   const [showNudge, setShowNudge] = useState(true);
   const [showConnectedNudge, setShowConnectedNudge] = useState(false);
 
-  // Update nodes when initialNodes changes
+  // Update nodes when initialNodes changes and fit view
   useEffect(() => {
     setNodes(initialNodes);
     setEdges(initialEdges);
-  }, [initialNodes, initialEdges, setNodes, setEdges]);
+    
+    // Slight delay to allow React Flow to process the new nodes/edges bounds before fitting
+    const timer = setTimeout(() => {
+      fitView({ padding: 0.2, duration: 800 });
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [initialNodes, initialEdges, setNodes, setEdges, fitView]);
 
   // Update selected state of nodes
   useEffect(() => {
@@ -192,12 +202,20 @@ export function NetworkMap({ activeNode, onNodeSelect }: NetworkMapProps) {
         nodeTypes={nodeTypes}
         fitView
         className="bg-black"
-        minZoom={0.2}
+        minZoom={0.1}
         maxZoom={2}
       >
         <Background color="rgba(255, 255, 255, 0.05)" gap={30} size={1} />
         <Controls className="!bg-black !border-white/20 !fill-white" />
       </ReactFlow>
     </div>
+  );
+}
+
+export function NetworkMap(props: NetworkMapProps) {
+  return (
+    <ReactFlowProvider>
+      <NetworkMapInner {...props} />
+    </ReactFlowProvider>
   );
 }
