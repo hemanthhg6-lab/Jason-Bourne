@@ -29,7 +29,7 @@
     "react-globe.gl": "^2.37.0",
     "react-player": "^3.4.0",
     "tailwind-merge": "^3.5.0",
-    "three": "^0.183.2",
+    "three": "^0.184.0",
     "vite": "^6.2.0"
   },
   "devDependencies": {

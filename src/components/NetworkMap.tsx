@@ -11,6 +11,7 @@ import {
   Position,
   ReactFlowProvider,
   useReactFlow,
+  MiniMap,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { TIMELINE_NODES } from '../data/timeline';
@@ -42,8 +43,24 @@ function TimelineNode({ data, selected }: NodeProps) {
   );
 }
 
+// Custom Act Boundary Node
+function ActBoundaryNode({ data }: NodeProps) {
+  return (
+    <div className="w-full h-full border border-white/5 bg-[linear-gradient(135deg,rgba(255,255,255,0.02)_0%,rgba(255,255,255,0)_100%)] rounded-[40px] flex items-center justify-center overflow-hidden pointer-events-none relative transition-all duration-500">
+      <div className="absolute top-8 left-10 font-mono text-sm font-bold text-white/30 tracking-[0.3em] pointer-events-none flex items-center gap-3">
+        <span className="w-2 h-2 rounded-full bg-white/20"></span>
+        ACT {data.act as number}
+      </div>
+      <div className="font-black text-6xl text-white/[0.04] whitespace-nowrap tracking-[0.2em] pointer-events-none select-none px-12 text-center leading-none">
+        {data.label as string}
+      </div>
+    </div>
+  );
+}
+
 const nodeTypes = {
   timeline: TimelineNode,
+  actBoundary: ActBoundaryNode,
 };
 
 function NetworkMapInner({ activeNode, onNodeSelect }: NetworkMapProps) {
@@ -66,7 +83,7 @@ function NetworkMapInner({ activeNode, onNodeSelect }: NetworkMapProps) {
       ? TIMELINE_NODES.filter(n => n.act === activeAct)
       : TIMELINE_NODES;
 
-    const nodes = filteredNodes.map((node, index) => {
+    const timelineNodes = filteredNodes.map((node, index) => {
       // Create a horizontal layout with slight deterministic vertical variations
       const x = index * 300 + 100;
       const y = (index % 2 === 0 ? 150 : 250) + (index % 3 === 0 ? 20 : -20);
@@ -79,20 +96,56 @@ function NetworkMapInner({ activeNode, onNodeSelect }: NetworkMapProps) {
       };
     });
 
+    // Generate Act Boundaries
+    const backgroundNodes: any[] = [];
+    const actsPresent = Array.from(new Set(filteredNodes.map(n => n.act)));
+    let currentIndexOffset = 0;
+    
+    const actTitles: Record<number, string> = {
+      1: "THE BOURNE IDENTITY",
+      2: "THE BOURNE SUPREMACY",
+      3: "THE BOURNE ULTIMATUM",
+      4: "JASON BOURNE"
+    };
+
+    actsPresent.forEach(actVal => {
+      const nodesInAct = filteredNodes.filter(n => n.act === actVal).length;
+      const x = currentIndexOffset * 300 + 50;
+      const width = (nodesInAct - 1) * 300 + 320; // 320 to comfortably pad the timeline nodes
+      
+      backgroundNodes.push({
+        id: `act-boundary-${actVal}`,
+        type: 'actBoundary',
+        position: { x, y: 40 },
+        data: { act: actVal, label: actTitles[actVal] || `ACT ${actVal}` },
+        style: { width, height: 350 },
+        selectable: false,
+        draggable: false,
+        zIndex: -1,
+        focusable: false,
+      });
+
+      currentIndexOffset += nodesInAct;
+    });
+
+    const nodes = [...backgroundNodes, ...timelineNodes];
+
     const edges = [];
-    for (let i = 0; i < nodes.length - 1; i++) {
-      const isConnectedToActive = activeNode === nodes[i].id || activeNode === nodes[i+1].id;
+    for (let i = 0; i < timelineNodes.length - 1; i++) {
+      const isConnectedToActive = activeNode === timelineNodes[i].id || activeNode === timelineNodes[i+1].id;
       edges.push({
-        id: `e-${nodes[i].id}-${nodes[i+1].id}`,
-        source: nodes[i].id,
-        target: nodes[i+1].id,
+        id: `e-${timelineNodes[i].id}-${timelineNodes[i+1].id}`,
+        source: timelineNodes[i].id,
+        target: timelineNodes[i+1].id,
         type: 'smoothstep',
-        animated: true,
+        animated: isConnectedToActive,
         style: { 
           stroke: isConnectedToActive ? '#00ff41' : 'rgba(255, 255, 255, 0.2)', 
           strokeWidth: isConnectedToActive ? 3 : 2,
-          filter: isConnectedToActive ? 'drop-shadow(0 0 5px rgba(0,255,65,0.5))' : 'none'
+          filter: isConnectedToActive ? 'drop-shadow(0 0 5px rgba(0,255,65,0.5))' : 'none',
+          strokeDasharray: isConnectedToActive ? '5 5' : 'none',
         },
+        className: isConnectedToActive ? 'animate-pulse' : '',
         markerEnd: {
           type: MarkerType.ArrowClosed,
           color: isConnectedToActive ? '#00ff41' : 'rgba(255, 255, 255, 0.2)',
@@ -207,6 +260,12 @@ function NetworkMapInner({ activeNode, onNodeSelect }: NetworkMapProps) {
       >
         <Background color="rgba(255, 255, 255, 0.05)" gap={30} size={1} />
         <Controls className="!bg-black !border-white/20 !fill-white" />
+        <MiniMap 
+          nodeColor={(n: any) => n.data?.status === 'CRITICAL' ? '#ff2a2a' : n.data?.status === 'ACTIVE' ? '#ffaa00' : '#00ff41'}
+          maskColor="rgba(0,0,0,0.8)"
+          style={{ backgroundColor: '#050505', border: '1px solid rgba(255,255,255,0.2)' }}
+          className="!bottom-8 !right-8 z-40"
+        />
       </ReactFlow>
     </div>
   );
