@@ -203,7 +203,7 @@ function NetworkMapInner({ activeNode, onNodeSelect }: NetworkMapProps) {
         <div className="font-mono text-xs text-white/50 tracking-widest mb-2">FILTER BY ACT</div>
         <button
           onClick={() => setActiveAct(null)}
-          className={`px-4 py-2 font-mono text-xs tracking-widest border transition-colors ${
+          className={`px-4 py-2 text-left font-mono text-xs tracking-widest border transition-colors ${
             activeAct === null 
               ? 'bg-white text-black border-white' 
               : 'bg-black text-white/70 border-white/20 hover:border-white/50 hover:text-white'
@@ -212,17 +212,24 @@ function NetworkMapInner({ activeNode, onNodeSelect }: NetworkMapProps) {
           ALL ACTS
         </button>
         {[1, 2, 3, 4].map(act => (
-          <button
-            key={act}
-            onClick={() => setActiveAct(act)}
-            className={`px-4 py-2 font-mono text-xs tracking-widest border transition-colors ${
-              activeAct === act 
-                ? 'bg-treadstone-red text-white border-treadstone-red' 
-                : 'bg-black text-white/70 border-white/20 hover:border-white/50 hover:text-white'
-            }`}
-          >
-            ACT {act}
-          </button>
+          <div key={act} className="relative group flex">
+            <button
+              onClick={() => setActiveAct(act)}
+              className={`w-full text-left px-4 py-2 font-mono text-xs tracking-widest border transition-colors ${
+                activeAct === act 
+                  ? 'bg-treadstone-red text-white border-treadstone-red' 
+                  : 'bg-black text-white/70 border-white/20 hover:border-white/50 hover:text-white'
+              }`}
+            >
+              ACT {act}
+            </button>
+            <div className="absolute left-full top-1/2 -translate-y-1/2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+              <div className="bg-black/90 border border-treadstone-red/30 px-3 py-1.5 font-mono text-[10px] text-white whitespace-nowrap tracking-widest shadow-[0_0_15px_rgba(255,42,42,0.15)] flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-treadstone-red animate-pulse" />
+                {['THE BOURNE IDENTITY', 'THE BOURNE SUPREMACY', 'THE BOURNE ULTIMATUM', 'JASON BOURNE'][act - 1]}
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Globe from 'react-globe.gl';
 import { motion, AnimatePresence } from 'motion/react';
 import { Move, MousePointerClick } from 'lucide-react';
@@ -17,6 +17,7 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
   const globeRef = useRef<any>(null);
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [ftueStep, setFtueStep] = useState(0); // 0: needs globe drag/zoom, 1: needs node click, 2: complete
+  const [activeAct, setActiveAct] = useState<number | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -59,7 +60,17 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
     }
   }, [activeNode, hoveredNode]);
 
-  // Handle zooming when activeNode changes externally
+  // Automatically switch act if activeNode changes externally and is not in the current act
+  useEffect(() => {
+    if (activeNode) {
+      const node = TIMELINE_NODES.find(n => n.id === activeNode);
+      if (node && activeAct !== null && node.act !== activeAct) {
+        setActiveAct(node.act);
+      }
+    }
+  }, [activeNode, activeAct]);
+
+  // Handle zooming when activeNode or activeAct changes
   useEffect(() => {
     if (globeRef.current) {
       if (activeNode) {
@@ -67,11 +78,17 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
         if (node) {
           globeRef.current.pointOfView({ lat: node.lat, lng: node.lng, altitude: 0.6 }, 1500);
         }
+      } else if (activeAct !== null) {
+        // Zoom to the first node of the selected act
+        const firstNodeOfAct = TIMELINE_NODES.find(n => n.act === activeAct);
+        if (firstNodeOfAct) {
+          globeRef.current.pointOfView({ lat: firstNodeOfAct.lat, lng: firstNodeOfAct.lng, altitude: 1.5 }, 1500);
+        }
       } else {
         globeRef.current.pointOfView({ altitude: 2.5 }, 1500);
       }
     }
-  }, [activeNode]);
+  }, [activeNode, activeAct]);
 
   const handleNodeClick = useCallback((node: any) => {
     AudioEngine.playNodeClick();
@@ -93,6 +110,23 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
 
   const activeData = TIMELINE_NODES.find(n => n.id === activeNode);
 
+  // Filter nodes by active act
+  const filteredNodes = useMemo(() => {
+    return activeAct 
+      ? TIMELINE_NODES.filter(n => n.act === activeAct)
+      : TIMELINE_NODES;
+  }, [activeAct]);
+
+  const arcsData = useMemo(() => {
+    return filteredNodes.slice(0, -1).map((node, i) => ({
+      startLat: node.lat,
+      startLng: node.lng,
+      endLat: filteredNodes[i + 1].lat,
+      endLng: filteredNodes[i + 1].lng,
+      color: ['rgba(255, 42, 42, 0.1)', 'rgba(255, 42, 42, 0.8)']
+    }));
+  }, [filteredNodes]);
+
   // Calculate tooltip position to prevent overflow
   const isRightHalf = mousePos.x > dimensions.width / 2;
   const isBottomHalf = mousePos.y > dimensions.height / 2;
@@ -102,6 +136,41 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
       {/* CRT Scanline Overlay */}
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.15] mix-blend-overlay bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
       
+      {/* Act Selection */}
+      <div className="absolute top-24 left-6 z-40 flex flex-col gap-2 pointer-events-auto">
+        <div className="font-mono text-xs text-white/50 tracking-widest mb-2">FILTER BY ACT</div>
+        <button
+          onClick={() => { setActiveAct(null); onNodeSelect(null); }}
+          className={`px-4 py-2 text-left font-mono text-xs tracking-widest border transition-colors ${
+            activeAct === null 
+              ? 'bg-white text-black border-white' 
+              : 'bg-black text-white/70 border-white/20 hover:border-white/50 hover:text-white'
+          }`}
+        >
+          ALL ACTS
+        </button>
+        {[1, 2, 3, 4].map(act => (
+          <div key={act} className="relative group flex">
+            <button
+              onClick={() => { setActiveAct(act); onNodeSelect(null); }}
+              className={`w-full text-left px-4 py-2 font-mono text-xs tracking-widest border transition-colors ${
+                activeAct === act 
+                  ? 'bg-treadstone-red text-white border-treadstone-red' 
+                  : 'bg-black text-white/70 border-white/20 hover:border-white/50 hover:text-white'
+              }`}
+            >
+              ACT {act}
+            </button>
+            <div className="absolute left-full top-1/2 -translate-y-1/2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+              <div className="bg-black/90 border border-treadstone-red/30 px-3 py-1.5 font-mono text-[10px] text-white whitespace-nowrap tracking-widest shadow-[0_0_15px_rgba(255,42,42,0.15)] flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-treadstone-red animate-pulse" />
+                {['THE BOURNE IDENTITY', 'THE BOURNE SUPREMACY', 'THE BOURNE ULTIMATUM', 'JASON BOURNE'][act - 1]}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div 
         className="absolute inset-0 cursor-crosshair"
         onPointerDown={() => ftueStep === 0 && setFtueStep(1)}
@@ -124,14 +193,14 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
           polygonsTransitionDuration={500}
           
           // Rings (reduced size)
-          ringsData={TIMELINE_NODES}
+          ringsData={filteredNodes}
           ringColor={(d: any) => d.id === activeNode ? '#00ff41' : d.id === hoveredNode?.id ? '#ff7777' : '#ff2a2a'}
           ringMaxRadius={(d: any) => d.id === activeNode ? 3 : d.id === hoveredNode?.id ? 2 : 1.5}
           ringPropagationSpeed={(d: any) => d.id === activeNode ? 0.8 : 1.5}
           ringRepeatPeriod={(d: any) => d.id === activeNode ? 800 : 1200}
           
           // Labels
-          labelsData={TIMELINE_NODES}
+          labelsData={filteredNodes}
           labelLat={(d: any) => d.lat}
           labelLng={(d: any) => d.lng}
           labelText={(d: any) => d.title}
@@ -144,13 +213,7 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
           onLabelHover={handleNodeHover}
           
           // Arcs
-          arcsData={TIMELINE_NODES.slice(0, -1).map((node, i) => ({
-            startLat: node.lat,
-            startLng: node.lng,
-            endLat: TIMELINE_NODES[i + 1].lat,
-            endLng: TIMELINE_NODES[i + 1].lng,
-            color: ['rgba(255, 42, 42, 0.1)', 'rgba(255, 42, 42, 0.8)']
-          }))}
+          arcsData={arcsData}
           arcColor="color"
           arcDashLength={0.4}
           arcDashGap={0.2}
@@ -195,7 +258,7 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
       {/* Bottom Timeline Scrubber */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 pointer-events-auto">
         <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-          {TIMELINE_NODES.map((node, i) => (
+          {filteredNodes.map((node, i) => (
             <div key={node.id} className="flex items-center">
               <button
                 onClick={() => handleNodeClick(node)}
@@ -210,8 +273,8 @@ export function GlobeMap({ activeNode, onNodeSelect }: GlobeMapProps) {
                 }`}
                 title={node.title}
               />
-              {i < TIMELINE_NODES.length - 1 && (
-                <div className={`w-4 h-[1px] ${activeNode === node.id || activeNode === TIMELINE_NODES[i+1].id ? 'bg-[#00ff41]/50' : 'bg-white/10'}`} />
+              {i < filteredNodes.length - 1 && (
+                <div className={`w-4 h-[1px] ${activeNode === node.id || activeNode === filteredNodes[i+1].id ? 'bg-[#00ff41]/50' : 'bg-white/10'}`} />
               )}
             </div>
           ))}
